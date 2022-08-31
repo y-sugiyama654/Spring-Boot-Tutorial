@@ -1,14 +1,14 @@
-package com.spring.tutorial.presentation.entity.response;
+package com.spring.tutorial.presentation.entity.request;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
-import lombok.Setter;
+import lombok.Getter;
 
 import java.time.LocalDateTime;
 
-@Setter
+@Getter
 @Data
-public class BookResponse {
+public class BookRequest {
     private String bookId;
     private String name;
     private LocalDateTime publishedDate;

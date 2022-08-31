@@ -7,6 +7,7 @@ import javax.annotation.PostConstruct;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 @Service
@@ -15,6 +16,13 @@ public class BookService {
 
     public Book find(String bookId) {
         Book book = bookRepository.get(bookId);
+        return book;
+    }
+
+    public Book create(Book book) {
+        String bookId = UUID.randomUUID().toString();
+        book.setBookId(bookId);
+        bookRepository.put(bookId, book);
         return book;
     }
 
