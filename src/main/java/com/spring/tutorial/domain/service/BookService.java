@@ -26,6 +26,10 @@ public class BookService {
         return book;
     }
 
+    public Book update(Book book) {
+        return bookRepository.put(book.getBookId(), book);
+    }
+
     @PostConstruct
     public void dummyData() {
         Book book = new Book();

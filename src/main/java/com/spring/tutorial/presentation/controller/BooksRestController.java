@@ -8,6 +8,7 @@ import com.spring.tutorial.presentation.entity.request.BookRequest;
 import com.spring.tutorial.presentation.entity.response.BookResponse;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -26,7 +27,6 @@ public class BooksRestController {
     @GetMapping(value = "{bookId}", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<BookResponse> getBook(@PathVariable String bookId) throws JsonProcessingException {
         Book book = bookService.find(bookId);
-
         BookResponse response = new BookResponse();
         response.setBookId(book.getBookId());
         response.setName(book.getName());
@@ -38,15 +38,22 @@ public class BooksRestController {
     @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> createBook(@Validated @RequestBody BookRequest request) {
         Book newBook = new Book();
-
         newBook.setName(request.getName());
         newBook.setPublishedDate(request.getPublishedDate());
-
         Book createdBook = bookService.create(newBook);
-
         String resourceUri = "http://localhost:8080/books/" + createdBook.getBookId();
 
         return ResponseEntity.created(URI.create(resourceUri)).build();
+    }
 
+    @PutMapping(value = "{bookId}", produces = MediaType.APPLICATION_JSON_VALUE)
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void put(@PathVariable String bookId, @Validated @RequestBody BookRequest request) {
+        Book book = new Book();
+        book.setBookId(bookId);
+        book.setName(request.getName());
+        book.setPublishedDate(request.getPublishedDate());
+
+        bookService.update(book);
     }
 }
